@@ -22,7 +22,7 @@ class YoutubeScrape(object):
     def get_video_divs(self):
         """ get all the video div tags from soup """
         self.video_divs = self.soup.findAll(
-            "li", {"class": "channels-content-item yt-shelf-grid-item"})
+            "li", {"class": "channels-content-item"})
 
     def process_data(self):
         """ get all video infos in json from list of single video soups """
