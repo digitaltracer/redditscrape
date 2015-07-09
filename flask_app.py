@@ -35,8 +35,10 @@ def get_result(subreddit, count):
 def get_youtube_urls(channel, count):
     """ fetches youtube video infos and returns as json """
     ys_object = YoutubeScrape(channel)
-    video_urls = ys_object.video_infos[:count]
-    return Response(response=json.dumps(video_urls),
+    video_infos = ys_object.video_infos
+    if count and int(count):
+        video_infos = video_infos[:int(count)]
+    return Response(response=json.dumps(video_infos),
                     status=200,
                     mimetype="application/json")
 
