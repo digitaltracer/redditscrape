@@ -33,18 +33,20 @@ class YoutubeScrape(object):
 
     def get_video_info(self, single_video_soup):
         """ get video title and url from single video soup """
-        video_tag = single_video_soup.find("h3",
-                                           {"class": "yt-lockup-title"})
-        if not video_tag:
+        video_header = single_video_soup.find("h3",
+                                              {"class": "yt-lockup-title"})
+        if not video_header:
             return {}
+        video_tag = video_header.find("a")
         video_attrs = video_tag.attrs
-        if not video_attrs:
+        if not video_attrs.get("href"):
             return {}
         video_url = self.youtube + video_attrs.get("href", "")
         title = video_attrs.get("title", "")
         video_html = requests.get(video_url).content.strip()
         video_soup = BeautifulSoup(video_html)
-        published_text = video_soup.find("strong", {"class": "watch-time-text"})
+        published_text = video_soup.find("strong",
+                                         {"class": "watch-time-text"}).text
         published_text = published_text.replace("Published on ", "")
         return {"url": video_url,
                 "title": title,
